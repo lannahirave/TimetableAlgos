@@ -6,7 +6,6 @@ internal class Chromosome
 {
     private readonly Dictionary<string, WorkingWeek> _timetable;
 
-
     public Chromosome()
     {
         _timetable = new Dictionary<string, WorkingWeek>();

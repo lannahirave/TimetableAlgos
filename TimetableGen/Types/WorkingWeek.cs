@@ -30,14 +30,14 @@ internal class WorkingWeek
             //for practices
             foreach (var group in specialtyGroups)
                 Week[ChooseRandomDay(workingDays)]
-                    .FillForDay(group, subject, LessonType.Practice); 
+                    .FillForDay(group, subject, LessonType.Practice);
             Utilities.PickRandomNumber(0, workingDays.Count);
             //for lectures
             Week[ChooseRandomDay(workingDays)].FillForDay(string.Join(", ", specialtyGroups), subject,
-                LessonType.Lecture); 
+                LessonType.Lecture);
         }
     }
-
+    
     private string ChooseRandomDay(List<string> workingDays)
     {
         while (workingDays.Any())

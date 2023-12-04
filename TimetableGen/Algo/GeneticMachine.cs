@@ -10,10 +10,10 @@ internal class GeneticMachine
     private float _previousFitness;
 
 
-    public GeneticMachine(int startPopulation = 4)
+    public GeneticMachine(int startPopulation)
     {
         LoadStaticLimitations();
-        _generation = new List<Chromosome>();
+        _generation = new List<Chromosome>(startPopulation);
         for (var i = 0; i < startPopulation; i++)
         {
             var start = new Chromosome();
@@ -23,7 +23,7 @@ internal class GeneticMachine
         ComputeParameters();
     }
 
-    private void LoadStaticLimitations() //static limitations
+    private void LoadStaticLimitations()
     {
         Utilities.LoadRequiredLessonsSet();
     }
@@ -31,7 +31,7 @@ internal class GeneticMachine
     private void ComputeParameters()
     {
         var inversedCoefficientSum =
-            _generation.Select(t => t.ComputeDeviation()).Select(devi => devi == 0 ? 0 : 1 / devi).Sum();
+            _generation.Select(t => t.ComputeDeviation()).Select(deviation => deviation == 0 ? 0 : 1 / deviation).Sum();
 
         _previousFitness = _currentFitness;
         var j = 1;
@@ -141,12 +141,10 @@ internal class GeneticMachine
         var randParent2 = Utilities.PickRandomNumber(0, 100);
         // choosing number that don't give same parent (avoid picking parent1)
         while (true)
-        {
             if (firstParentRange.Contains(randParent2))
                 randParent2 = Utilities.PickRandomNumber(0, 100);
             else
                 break;
-        }
 
         for (var j = 0; j < probabilityLine.Count; j++)
             if (probabilityLine[j].Contains(randParent2))
@@ -176,8 +174,9 @@ internal class GeneticMachine
         var i = 1;
         foreach (var chromosome in _generation)
         {
-            result += string.Concat("Chromosome ", i, " , Likelihood: ", chromosome.Likelihood.ToString("F2"), " % , Fitness: ",
-                chromosome.Deviation, chromosome.Deviation == 0 ? " ANSWER HERE!" : "", "\n");
+            result += string.Concat("Chromosome #", i, " , likelihood: ", chromosome.Likelihood.ToString("F2"),
+                " % , fitness: ",
+                chromosome.Deviation, chromosome.Deviation == 0 ? " ANSWER FOUND" : "", "\n");
             ++i;
         }
 
